@@ -1,0 +1,120 @@
+<html>
+    <head>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.bundle.js"></script>
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" ></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous" ></script>
+            <script src="https://unpkg.com/avl"></script>
+            <script type="text/javascript" src="./heap.js"></script>
+            <link rel="stylesheet" href="styles.css">
+
+            
+    </head>
+    <body>
+        <div class="pos-f-t">
+            <div class="collapse" id="m">
+              <div class="bg-dark p-2">
+
+             
+            </div>
+            </div>
+            <nav class="navbar navbar-dark bg-dark ">
+                  
+                  <div class="form-row col col-10" id="mainMenu">
+                            <select class="form-control col col-3 mx-auto" id="algoSelect">
+                                <option value="" disabled>Select Algorithm</option>
+                              <option value="kChart" selected>k Means</option>
+                              <option value="dChart">Density Peak</option>
+                              <option value="compMode">Comparison Mode</option>
+                            </select>
+                                <select class="form-control col col-2 mx-auto" id="kSelector">
+                                    <option value="" disabled>Select k</option>
+                                    <option selected>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                  </select>
+                                  <div class="col col-2 mx-auto">
+                                  <label class="text-white">Select n</label>
+                                <input type="range" class="custom-range" min="50" max="1500" step="1" id="nSlider" value="750"></div>
+                                <div class="col col-2 mx-auto">
+                                <label class="text-white">Randomness</label>
+                                <input type="range" class="custom-range" min="0" max="1" step="0.1" value="0.1" id="randomSlider"></div>
+                                <div class="col col-2 mx-auto">
+                                <label class="text-white">Clusters</label>
+                                <input type="range" class="custom-range" min="2" max="5" step="1" value="3" id="clusterSlider"></div>
+                                 <div id="dContainer" style="display: none;">
+                                    <label class="text-white">Select d</label><input type="range" class="custom-range" min="0.001" max="0.3" step="0.005" id="dSlider" value="0.02">
+                                 </div>
+                            </div>
+                           
+                  <button type="button" id="startBtn" class="btn btn-success mx-auto">Start</button>
+                <button type="button" id="pauseBtn" class="btn btn-warning mx-auto">Pause</button>
+            </nav>
+          </div>
+<div class="container-fluid ">
+    <div class="row" style="height:100vh">
+    <div class="col col-5" id="kDiv">
+<canvas id="kChart"></canvas>
+</div>
+<div class="col col-5" style="display: none;" id="dDiv">
+  <canvas id="dChart"></canvas>
+  </div>
+<div class="col col-6 text-center justify-content-center" id="infoDiv">
+  <div id="infoDash">
+    <h1 id="pageHeader">k Means</h1>
+    <i><h3 id="nCount">n = 750</h3></i>
+    <i><h3 id="kCount">k = 2</h3></i>
+    <i><h3 id="dCount" style="display: none;">d = 0.02</h3></i>
+    <i><h2>Iterations: <span id="kItr"> 0</h2></i></div>
+
+    <table class="table" id="kTable">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Colour</th>
+          <th scope="col">#</th>
+          <th scope="col" class="tHide">x-position</th>
+          <th scope="col" class="tHide">y-position</th>
+          <th scope="col">Cluster Size</th>
+          <th scope="col">+/-</th>
+        </tr>
+      </thead>
+      <tbody id="kTBody">
+        </tbody>
+      </table>
+      <table class="table" id="dTable" style="display: none;">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Rank</th>
+              <th scope="col" class="tHide">x-position</th>
+              <th scope="col" class="tHide">y-position</th>
+              <th scope="col">Density</th>
+              <th scope="col">Next Denser Neighbour</th>
+            </tr>
+          </thead>
+          <tbody id="dTBody">
+            </tbody>
+          </table>
+    </div>
+
+</div>
+</div>
+<script src="./chartjs-plugin-dragData.js"></script>
+<script src="Plugins.js"></script>
+<script src="kChart.js"></script>
+<script src="controller.js"></script>
+
+
+
+
+
+
+<script src="densityPeak.js"></script>
+<script src="front.js"></script>
+<script src="kmeans.js"></script>
+
+
+</body>
+</html>
