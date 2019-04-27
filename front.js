@@ -1,6 +1,7 @@
 var updateTable
 var updateTableClusters
 $( document ).ready(function() {
+     
     $('#kmeans').collapse('show');
     $('#startBtn').on('click', () => {
         if (currChart == "dChart") sweepLine(); else
@@ -18,6 +19,8 @@ $( document ).ready(function() {
         deleteCluster()
 
     });
+
+
 
         $('.custom-range').on('input', (event) => {
         $(event.target).attr('data-original-title', event.target.value)
@@ -38,13 +41,52 @@ $( document ).ready(function() {
         let diff = k - selection 
         if (diff > 0) for (let i = 0; i < Math.abs(diff); i++) {
             delCentroid();
+            k--
             console.log($('#kTBody tr').last())
             $('#kTBody tr').last().remove()
         }
         else for (let i = 0; i < Math.abs(diff); i++) {
             addCentroid();
+            k++
         }
         $('#kCount').text("k = " + k)
+        }
+        
+    });
+
+    $('#fileSelector').on('change', (event) => {
+        let selection = event.target.value
+        if (selection == "Spiral") {
+            $.ajax({
+                url: "spiral.txt",
+                dataType: "text",
+                success: function(data) {
+                    data = String(data).split("\t")
+                    
+                    dataArr = []
+                    
+                    for (let i = 0; i < data.length - 1; i++) {
+                        if (i % 2 == 0) dataArr.push({x: parseFloat(data[i]), density: 0})
+                        else dataArr[dataArr.length - 1].y = parseFloat(data[i])
+                    }
+                    $('#kTBody').empty()
+                    getkPoints.data = dataArr
+                    getdPoints.data = dataArr
+                    if (currChart == 'kChart') {
+                    getkCentroids.data = []
+                    getkCentroids.pointBackgroundColor = []
+                    for (let i = 0; i < k; i ++) {
+                        addCentroid()
+                    }
+                    kChart.update()
+                } else dChart.update()
+                    
+
+                }
+            });
+        }
+        else {
+        
         }
         
     });

@@ -8,6 +8,7 @@ let count = 0
 for (let i = 0; i < getkPoints.data.length; i++) { //point loop
         let minDistance = Number.MAX_SAFE_INTEGER
         let point = getkPoints.data[i]
+        console.log(point)
         for (let j = 0; j < getkCentroids.data.length; j++) { //centroid loop
             let centroid = getkCentroids.data[j]
             let dist = Math.sqrt(Math.pow(point.x - centroid.x, 2) + Math.pow(point.y - centroid.y, 2));
@@ -25,7 +26,6 @@ for (let i = 0; i < getkPoints.data.length; i++) { //point loop
         }
         kChart.update()
 }
-
 updateTableClusters()
 
 $('#kItr').text(++iterations)
@@ -33,6 +33,7 @@ if (count > 0) setTimeout(updateCentroids, 200)
 }
 
 function updateCentroids () {
+
     for (let i = 0; i < getkCentroids.data.length; i++) {
         let centroid = getkCentroids.data[i]
         let newX = meansTable[i].x / meansTable[i].population

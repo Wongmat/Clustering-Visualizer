@@ -1,10 +1,12 @@
 function sweepLine () {
+    addLines()
     let right = 1 //right array index
     let minRange = 0; //min search val
     let maxRange = 0; //max search val
     let top = 0  //top of line
     let active = new AVLTree() //create AVL tree
     let sorted = getdPoints.data.sort(yComp)
+    console.log(sorted)
     showLines(true)
     let i = 0;
     sweepLoop();
@@ -12,7 +14,7 @@ function sweepLine () {
     function sweepLoop () {
 
     let curr = sorted[i]
-    top = curr.y + d
+    top = curr.y + d * kAxes.max
     moveLines(top)
     while (right < sorted.length && sorted[right].y <= top) {
             active.insert(sorted[right].x ,{index: right, y: sorted[right++].y})
@@ -117,15 +119,14 @@ function higherMinDistance () {
             index: densityMap[i].index,
             minDist: minDist})   
     }*/
-
+    console.log(densityMap2)
     setTimeout(centroidFinder, 300);
 
     function centroidFinder () {
         dChart.config.plugins.pop()
-        console.log(heap)
         let candidate = findNext()
         let index = candidate.index
-        
+        console.log(candidate)
         let randomColour = colGen.genColour()
         getdPoints.pointBackgroundColor[index] = randomColour
         getdPoints.radius[index] = 0

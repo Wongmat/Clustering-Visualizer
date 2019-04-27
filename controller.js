@@ -1,7 +1,7 @@
 const  kctx = document.getElementById('kChart').getContext('2d');
 const  dctx = document.getElementById('dChart').getContext('2d');
-var k = 4
-var  n = 750
+var k = 3
+var n = 750
 var d = 0.02
 var dK = 2
 var clusters = 3
@@ -16,9 +16,20 @@ let getdPoints = dChart.data.datasets[3]
 let getdCentroids = dChart.data.datasets[2]
 let topSweep = dChart.data.datasets[0]
 let bottomSweep = dChart.data.datasets[1]
+var kAxes
+var dAxes
 var currChart = "kChart"
 var testData = [{x: 0.5, y: 0.5, density: 0}, {x: 0.6, y: 0.4, density: 0}, {x: 0.5, y: 0.3, density: 0}, {x: 0.4, y: 0.3, density: 0}]
 dChart.destroy()
+var myData
+
+for (let i = 0; i < k; i++) {
+addCentroid()
+}
+
+
+
+
 
 function genNorm () {
     let newPoints = normalDist(4, randomness)
