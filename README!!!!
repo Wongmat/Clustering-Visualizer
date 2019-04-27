@@ -1,0 +1,3 @@
+This program requires that CORS be turned off in the browser in order to function (Javascript doesn't allow reading of local files on the desktop through CORS)
+
+Alternatively, it is live here: https://wongmat.github.io/Clustering-Visualizer/

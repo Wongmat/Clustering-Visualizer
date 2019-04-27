@@ -14,7 +14,7 @@ function sweepLine () {
     function sweepLoop () {
 
     let curr = sorted[i]
-    top = curr.y + d * kAxes.max
+    top = curr.y + d * Axes.y.max
     moveLines(top)
     while (right < sorted.length && sorted[right].y <= top) {
             active.insert(sorted[right].x ,{index: right, y: sorted[right++].y})
@@ -101,25 +101,6 @@ function higherMinDistance () {
         for (point of points) heap.push(point)
     }
 
-
-
-        /*for (let j = i + 1; j < densityMap.length; j++) {
-            let point2 = getdPoints.data[densityMap[j].index]
-            if (point1.density < point2.density) {
-            let dist = Math.sqrt(Math.pow(point1.x - point2.x, 2) + Math.pow(point1.y - point2.y, 2))
-                    if (dist < minDist) {
-                        minDist = dist
-                        minIndex = densityMap[j].index
-                    }
-                }
-        }
-        heap.push({x: densityMap[i].density, 
-            y: (minDist == Number.MAX_SAFE_INTEGER) ? 1 : minDist, 
-            neighbour: minIndex, 
-            index: densityMap[i].index,
-            minDist: minDist})   
-    }*/
-    console.log(densityMap2)
     setTimeout(centroidFinder, 300);
 
     function centroidFinder () {
@@ -132,7 +113,7 @@ function higherMinDistance () {
         getdPoints.radius[index] = 0
         getdCentroids.data.push(getdPoints.data[index])
         getdCentroids.pointBackgroundColor.push(randomColour)
-        $('#dTBody').append('<tr id="cent' + index + '"><th scope="row"><div class="square" style="background-color:' + randomColour + '"></div></th><td>' + getdCentroids.data.length + '</td><td class="tableX">' + getdPoints.data[index].x + '</td><td class="tableY">' + getdPoints.data[index].y + '<td class="tableDensity">' + getdPoints.data[index].density + '</td><td class="dTableNeighbour">' + candidate.y +'</td></tr>')
+        $('#dTBody').append('<tr id="cent' + index + '"><th scope="row"><div class="square" style="background-color:' + randomColour + '"></div></th><td>' + getdCentroids.data.length + '</td><td class="tableX">' + getdPoints.data[index].x + '</td><td class="tableY">' + getdPoints.data[index].y + '<td class="tableDensity">' + getdPoints.data[index].density + '</td><td class="dTableNeighbour">' + candidate.stdFromMean +'</td></tr>')
         dChart.update()
         if (getdCentroids.data.length < dK) {
             setTimeout(centroidFinder, 300);
@@ -157,9 +138,6 @@ function clusterBuilder () {
             }
             if (!(getdPoints.pointBackgroundColor[i] === getdCentroids.pointBackgroundColor[minIndex])) {
                     getdPoints.pointBackgroundColor[i] = getdCentroids.pointBackgroundColor[minIndex]
-                    //meansTable[minIndex].x += point.x
-                    //meansTable[minIndex].y += point.y
-                    //meansTable[minIndex].population++
                     count++
             }
             dChart.update()

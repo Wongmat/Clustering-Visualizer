@@ -55,39 +55,83 @@ $( document ).ready(function() {
     });
 
     $('#fileSelector').on('change', (event) => {
-        let selection = event.target.value
-        if (selection == "Spiral") {
+        getkCentroids.data = []
+        getkPoints.data = []
+        currentFile = event.target.value
+        if (currentFile != "random") {
             $.ajax({
-                url: "spiral.txt",
+                url: currentFile,
                 dataType: "text",
                 success: function(data) {
-                    data = String(data).split("\t")
+
                     
                     dataArr = []
-                    
+                    if (currentFile == "spiral.txt") {
+                        Axes.x.min = 0
+                        Axes.x.max = 1
+                        Axes.y.min = 0
+                        Axes.y.max = 35
+                        data = String(data).split("\t")
                     for (let i = 0; i < data.length - 1; i++) {
-                        if (i % 2 == 0) dataArr.push({x: parseFloat(data[i]), density: 0})
+                        if (i % 2 == 0) dataArr.push({x: parseFloat(data[i]), y: 0, density: 0})
                         else dataArr[dataArr.length - 1].y = parseFloat(data[i])
                     }
+                    spiralData = dataArr
+                 } else {
+                    Axes.x.min = 0
+                    Axes.x.max = 1
+                    Axes.y.min = 0
+                    Axes.y.max = 3000
+                    data = String(data).split("\n")
+                                
+                               for (let i = 0; i < data.length - 1; i++) {
+                                   let label = ""
+                                   for (let j = 0; j < 3; j++) {
+                                       label += data[i].split(',')[j] + " "
+                                   }
+                                   console.log(label)
+                                   getkPoints.labels.push(label)
+                                   let threePer = !data[i].split(',')[3] ? 0 : parseFloat(data[i].split(',')[3]) 
+                                   let points = parseFloat(data[i].split(',')[4])
+                                    dataArr.push({x: threePer, y: points, density: 0})
+                                   
+                               }
+                               nbaData = dataArr
+                    }
+
+                    
                     $('#kTBody').empty()
                     getkPoints.data = dataArr
                     getdPoints.data = dataArr
                     if (currChart == 'kChart') {
-                    getkCentroids.data = []
-                    getkCentroids.pointBackgroundColor = []
                     for (let i = 0; i < k; i ++) {
                         addCentroid()
                     }
-                    kChart.update()
+                    
                 } else dChart.update()
                     
-
+            
                 }
             });
-        }
-        else {
         
-        }
+        } else {
+            Axes.x.min = 0
+            Axes.x.max = 1
+            Axes.y.min = 0
+            Axes.y.max = 1
+            $('#kTBody').empty()
+            genNorm()
+            for (let i = 0; i < k; i ++) {
+                addCentroid()
+            }
+            getkPoints.data = masterData
+
+
+            
+
+    
+        }  
+        
         
     });
 
@@ -111,8 +155,7 @@ $( document ).ready(function() {
     });
 
     $('#pauseBtn').on('click', (event) => {
-            clearTimeout()
-            setTimeout(() => { console.log('ok')}, 5000);
+            resetDataset()
         });
 
     $('#dSlider').on('input', (event) => {

@@ -1,8 +1,8 @@
 var kConfig = {
     type: 'scatter',
     data: {
-        labels: ["Clusters", "Centroids"],
-        datasets: [{ label: "Centroids",
+        labels: [],
+        datasets: [{ labels: [],
         data: [],
         pointBackgroundColor: [],
         radius: 12,
@@ -12,7 +12,7 @@ var kConfig = {
         borderColor: "black",
         pointStyle: 'rect'
       },
-      { label: "Points",
+      { labels: [],
       data:  [],
       pointBackgroundColor: [],
       pointHoverRadius: 3,
@@ -30,9 +30,9 @@ var kConfig = {
         scales: {
             xAxes: [{
                 ticks: {
-                    display: false,
+                    display: true,
                     callback : function(value,index,values){
-                        kAxes = {min: values[0], max: values[values.length - 1]}
+                        //Axes.x = {min: values[0], max: values[values.length - 1]}
                         //console.log(kAxes)
                     
                     }
@@ -40,8 +40,9 @@ var kConfig = {
             }],
             yAxes: [{
                 ticks: {
-                    display: false,
+                    display: true,
                     callback : function(value,index,values){
+                        //Axes.y = {min: values[0], max: values[values.length - 1]}
                         //kAxes = values
                         //console.log(kAxes)
                     }
@@ -55,11 +56,17 @@ var kConfig = {
                     let label = []
                     let point = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index] 
                     label[0] = ((tooltipItem.datasetIndex === 0) ? "Centroid " : "Point ") + (tooltipItem.index + 1)
+                    let i = 0
+                    if (data.datasets[tooltipItem.datasetIndex].labels[tooltipItem.index]) {
+                        label[1] = data.datasets[tooltipItem.datasetIndex].labels[tooltipItem.index]
+                        i++ 
+                    }
                     if (tooltipItem.datasetIndex !== 0) {
-                    for (let i = 0; i < getkCentroids.data.length; i++) {
+                    for (; i < getkCentroids.data.length; i++) {
                         let dist = Math.sqrt(Math.pow(point.x - getkCentroids.data[i].x, 2) + Math.pow(point.y - getkCentroids.data[i].y, 2));
                         label[i + 1] = "Distance to Centroid " + (i + 1) + ": " + dist
-                    }  
+                      
+                }
                 }
 
                     return label;
@@ -86,7 +93,8 @@ var kConfig = {
 function addCentroid () {
 
     let randomColour = colGen.genColour()
-    getkCentroids.data.push({x: Math.random() * (kAxes.max - kAxes.min) + kAxes.min, y: Math.random() * (kAxes.max - kAxes.min) + kAxes.min, pop: 0})
+    getkCentroids.data.push({x: Math.random() * (Axes.x.max - Axes.x.min) + Axes.x.min, y: Math.random() * (Axes.y.max - Axes.y.min) + Axes.y.min, pop: 0})
+    console.log(Axes.x, Axes.y)
     getkCentroids.pointBackgroundColor.push(randomColour)
     let index = getkCentroids.data.length
         let x = getkCentroids.data[index - 1].x
@@ -126,7 +134,7 @@ var dConfig = {
           showLine: false,
           //dragData: false
         },
-            { label: "Centroids",
+            { labels: [],
             data: [],
             pointBackgroundColor: [],
             radius: 12,
@@ -136,7 +144,7 @@ var dConfig = {
             pointStyle: 'rect',
             dragData: false
           }, 
-          { label: "Points",
+          { labels: [],
             data: [],
             pointBackgroundColor: Array.from(new Array(1500), () => { return "#264bec" }),
             pointHoverRadius: Array.from(new Array(1500), () => { return 3 }),
@@ -157,7 +165,7 @@ var dConfig = {
                     ticks: {
                         display: false,
                         callback : function(value,index,values){
-                            kAxes = {min: values[0], max: values[values.length - 1]}
+                            //Axes.x = {min: values[0], max: values[values.length - 1]}
                             //console.log(kAxes)
                         
                         }
@@ -165,7 +173,12 @@ var dConfig = {
                 }],
                 yAxes: [{
                     ticks: {
-                        display: false
+                        display: false,
+                        callback : function(value,index,values){
+                            //Axes.y = {min: values[0], max: values[values.length - 1]}
+                            //console.log(kAxes)
+                        
+                        }
                     }
                 }]
             },
@@ -192,8 +205,8 @@ var dConfig = {
     //console.log(dChart.data.datasets)
     
     function addLines() {
-        topSweep.data = [{x: kAxes.min, y: kAxes.max * d}, {x: kAxes.max, y: d * kAxes.max * d}]
-        bottomSweep.data = [{x: kAxes.min, y: kAxes.min}, {x: kAxes.max ,y: kAxes.min}]
+        topSweep.data = [{x: Axes.x.min, y: Axes.y.max * d}, {x: Axes.x.max, y: d * Axes.y.max * d}]
+        bottomSweep.data = [{x: Axes.x.min, y: Axes.y.min}, {x: Axes.x.max ,y: Axes.y.min}]
     }
     
     
@@ -207,16 +220,22 @@ var dConfig = {
     
     function moveLines (topY) {
         //console.log("before", topY, topSweep.data, bottomSweep.data)
-        topY = (topY > kAxes.max) ? kAxes.max : topY
-        console.log(topSweep, bottomSweep, topY)
+        topY = (topY > Axes.y.max) ? Axes.y.max : topY
         topSweep.data[0].y = topY
         topSweep.data[1].y = topY
-        bottomSweep.data[0].y = topY - d * kAxes.max
-        bottomSweep.data[1].y = topY - d * kAxes.max
+        bottomSweep.data[0].y = topY - d * Axes.y.max
+        bottomSweep.data[1].y = topY - d * Axes.y.max
         //console.log("after", topY, topSweep.data, bottomSweep.data)
         dChart.update({
             duration: 1
         })
+    }
+
+    function resetChart () {
+        getkPoints.data = []
+        getkCentroids.data = []
+        getkCentroids.pointBackgroundColor = []
+        getkPoints.labels = []
     }
 
     /*function a: (chart) => {

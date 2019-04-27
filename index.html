@@ -40,10 +40,9 @@
                                   </select>
                                   <select class="form-control col col-2 mx-auto" id="fileSelector">
                                       <option value="" disabled>Select File</option>
-                                      <option selected>Random</option>
-                                      <option>Spiral</option>
-                                      <option>4</option>
-                                      <option>5</option>
+                                      <option selected value="random">Random</option>
+                                      <option value="spiral.txt">Spiral</option>
+                                      <option value="2017nba.csv">NBA</option>
                                     </select>
                                   <div class="col col-2 mx-auto">
                                   <label class="text-white">Select n</label>
@@ -60,7 +59,7 @@
                             </div>
                            
                   <button type="button" id="startBtn" class="btn btn-success mx-auto">Start</button>
-                <button type="button" id="pauseBtn" class="btn btn-warning mx-auto">Pause</button>
+                <button type="button" id="pauseBtn" class="btn btn-warning mx-auto">Reset</button>
             </nav>
           </div>
 <div class="container-fluid ">
@@ -101,7 +100,7 @@
               <th scope="col" class="tHide">x-position</th>
               <th scope="col" class="tHide">y-position</th>
               <th scope="col">Density</th>
-              <th scope="col">Next Denser Neighbour</th>
+              <th scope="col">Standard Deviations from Same Density Class</th>
             </tr>
           </thead>
           <tbody id="dTBody">

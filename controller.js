@@ -7,6 +7,8 @@ var dK = 2
 var clusters = 3
 var randomness = 0.3
 var masterData = normalDist(3)
+var nbaData = []
+var spiralData = []
 let colGen = new colourGenerator() //Array.from(new Array(n), () => { return {x: normalGen(4), y: normalGen(4), density: 0 }})
 var kChart = new Chart(kctx, kConfig)
 var dChart = new Chart(dctx, dConfig)
@@ -16,19 +18,17 @@ let getdPoints = dChart.data.datasets[3]
 let getdCentroids = dChart.data.datasets[2]
 let topSweep = dChart.data.datasets[0]
 let bottomSweep = dChart.data.datasets[1]
-var kAxes
-var dAxes
+var currentFile = "random"
+let Axes = {x: {min: 0, max: 1}, y: {min: 0, max: 1}}
 var currChart = "kChart"
 var testData = [{x: 0.5, y: 0.5, density: 0}, {x: 0.6, y: 0.4, density: 0}, {x: 0.5, y: 0.3, density: 0}, {x: 0.4, y: 0.3, density: 0}]
 dChart.destroy()
-var myData
 
 for (let i = 0; i < k; i++) {
 addCentroid()
+
+
 }
-
-
-
 
 
 function genNorm () {
@@ -103,11 +103,39 @@ function removePoints(toRemove) {
 }
 
 function resetDataset() {
-   
-    masterData = Array.from(new Array(n), () => { return {x: normalGen(4), y: normalGen(4), density: 0} })
-    getPoints.data = masterData
-    if (currChart == 'kChart') kChart.update()
-    else dChart.update()
+
+    if (currChart === 'kChart') {
+        getkCentroids.data = []
+        getkCentroids.pointBackgroundColor = []
+        $('#kTBody').empty()
+        for (let i = 0; i < k; i ++) {
+            addCentroid()
+        }
+    if (currentFile === "random") {
+            getkPoints.data = masterData
+            
+    }
+    else if (currentFile === "spiral.txt") {
+        getkPoints.data = spiralData
+    } else getkPoints.data = nbaData
+
+    getkPoints.pointBackgroundColor = Array.from(new Array(1500), () => { return "#264bec" })
+    kChart.update()
+} else {
+    getdCentroids.data = []
+    getdCentroids.pointBackgroundColor = []
+    if (currentFile === "random") {
+            getdPoints.data = masterData
+            
+    }
+    else if (currentFile === "spiral.txt") {
+        getdPoints.data = spiralData
+    } else getdPoints.data = nbaData
+
+    getdPoints.pointBackgroundColor = Array.from(new Array(1500), () => { return "#264bec" })
+    dChart.update() 
+}
+
 }
 
 function changeView() {
